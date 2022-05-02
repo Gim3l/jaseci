@@ -10,21 +10,29 @@
         "Programming Languages"
     ],
     "activationEvents": [
-        "onCommand:jac.helloWorld",
-        "onCommand:jac.viewGraph"
+        "onCommand:jac.viewGraph",
+        "onCommand:jac.run"
     ],
     "main": "./out/extension.js",
     "contributes": {
         "commands": [
             {
-                "command": "jac.helloWorld",
-                "title": "Hello World"
+                "command": "jac.run",
+                "title": "JAC: Run",
+                "when": "editorTextFocus && editorLangId == dot"
             },
             {
                 "command": "jac.viewGraph",
-                "title": "View Graph"
+                "title": "JAC: View Graph",
+                "when": "editorTextFocus && editorLangId == dot"
             }
         ],
+        "keybindings": {
+            "command": "jac.viewGraph",
+            "key": "ctrl+shift+v",
+            "mac": "shift+cmd+v",
+            "when": "editorTextFocus && editorLangId == dot"
+        },
         "languages": [
             {
                 "id": "jac",
@@ -36,6 +44,18 @@
                     ".jac"
                 ],
                 "configuration": "./language-configuration.json"
+            },
+            {
+                "id": "dot",
+                "aliases": [
+                    "JAC (DOT)"
+                ],
+                "extensions": [
+                    ".gv",
+                    ".dot",
+                    ".DOT"
+                ],
+                "configuration": "dot/dot.configuration.json"
             }
         ],
         "grammars": [
@@ -43,6 +63,11 @@
                 "language": "jac",
                 "scopeName": "source.jac",
                 "path": "./syntaxes/jac.tmLanguage.json"
+            },
+            {
+                "language": "dot",
+                "scopeName": "source.dot",
+                "path": "dot/syntaxes/dot.tmLanguage"
             }
         ]
     },
@@ -55,16 +80,19 @@
         "test": "node ./out/test/runTest.js"
     },
     "devDependencies": {
-        "@types/vscode": "^1.66.0",
         "@types/glob": "^7.2.0",
         "@types/mocha": "^9.0.0",
         "@types/node": "14.x",
+        "@types/vscode": "^1.66.0",
         "@typescript-eslint/eslint-plugin": "^5.9.1",
         "@typescript-eslint/parser": "^5.9.1",
+        "@vscode/test-electron": "^2.0.3",
         "eslint": "^8.6.0",
         "glob": "^7.2.0",
         "mocha": "^9.1.3",
-        "typescript": "^4.5.4",
-        "@vscode/test-electron": "^2.0.3"
+        "typescript": "^4.5.4"
+    },
+    "dependencies": {
+        "@hpcc-js/wasm": "^1.14.1"
     }
 }
