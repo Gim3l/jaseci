@@ -2,7 +2,7 @@
     "name": "jac",
     "displayName": "JAC",
     "description": "Jac Programming Language",
-    "version": "0.0.1",
+    "version": "1.0.1",
     "engines": {
         "vscode": "^1.63.0"
     },
@@ -75,9 +75,7 @@
         "vscode:prepublish": "yarn run compile",
         "compile": "tsc -p ./",
         "watch": "tsc -watch -p ./",
-        "pretest": "yarn run compile && yarn run lint",
-        "lint": "eslint src --ext ts",
-        "test": "node ./out/test/runTest.js"
+        "test-compile": "tsc -p ./"
     },
     "devDependencies": {
         "@types/glob": "^7.2.0",

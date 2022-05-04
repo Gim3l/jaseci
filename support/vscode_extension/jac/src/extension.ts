@@ -1,7 +1,7 @@
 // The module 'vscode' contains the VS Code extensibility API
 // Import the module and reference it with the alias vscode in your code below
-import { graphviz } from "@hpcc-js/wasm";
 import * as vscode from "vscode";
+import viewGraph from "./commands/viewGraph";
 
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
@@ -15,26 +15,10 @@ export function activate(context: vscode.ExtensionContext) {
   // The commandId parameter must match the command field in package.json
   let viewGraphCommand = vscode.commands.registerCommand(
     "jac.viewGraph",
-    async () => {
-      const activeDocument = vscode.window.activeTextEditor?.document;
-      const documentText = activeDocument?.getText();
-      try {
-        const svg = await graphviz.layout(documentText as string, "svg", "dot");
-
-        const panel = vscode.window.createWebviewPanel(
-          "jacGraph",
-          "Jac Graph",
-          vscode.ViewColumn.Two
-        );
-
-        panel.webview.html = getWebviewContent(svg);
-      } catch (err: any) {
-        vscode.window.showErrorMessage(err);
-      }
-    }
+    async () => await viewGraph()
   );
 
-  // run a jac file
+  //run a jac file
   let generateGraphCommand = vscode.commands.registerCommand(
     "jac.run",
     async () => {
