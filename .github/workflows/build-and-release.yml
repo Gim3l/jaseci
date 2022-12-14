@@ -21,18 +21,22 @@ jobs:
     outputs:
       release_id: ${{ steps.create-release.outputs.result }}
 
+    
+    
     steps:
       - uses: actions/checkout@v3
       - name: setup node
         uses: actions/setup-node@v3
         with:
           node-version: 16
+          projectPath: "./jaseci_studio"
       - name: get version
         run: echo "PACKAGE_VERSION=$(node -p "require('./package.json').version")" >> $GITHUB_ENV
       - name: create release
         id: create-release
         uses: actions/github-script@v6
         with:
+          projectPath: "./jaseci_studio"
           script: |
             const { data } = await github.rest.repos.createRelease({
               owner: context.repo.owner,
@@ -54,12 +58,14 @@ jobs:
         platform: [macos-latest, ubuntu-20.04, windows-latest]
 
     runs-on: ${{ matrix.platform }}
+    
     steps:
       - uses: actions/checkout@v3
       - name: setup node
         uses: actions/setup-node@v3
         with:
           node-version: 16
+          projectPath: "./jaseci_studio"
       - name: install Rust stable
         uses: dtolnay/rust-toolchain@stable
       - name: install dependencies (ubuntu only)
@@ -86,6 +92,7 @@ jobs:
         env:
           release_id: ${{ needs.create-release.outputs.release_id }}
         with:
+          projectPath: "./jaseci_studio"
           script: |
             github.rest.repos.updateRelease({
               owner: context.repo.owner,
