@@ -89,7 +89,7 @@ jobs:
         id: bump-version
         working-directory: "./jaseci_studio"
         run: |
-            echo '{"package": {"version": "1.3.0"}}' > studio-version-config.json
+            echo '{"package": {"version": "1.9.0"}}' > studio-version-config.json
       - uses: tauri-apps/tauri-action@v0          
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
