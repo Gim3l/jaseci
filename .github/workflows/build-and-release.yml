@@ -85,13 +85,19 @@ jobs:
       - name: install app dependencies and build it
         run: yarn && yarn build
         working-directory: "./jaseci_studio"
+      - name: bump version
+        id: bump-version
+        working-directory: "./jaseci_studio"
+        run: |
+            json='{"package": {"version": "1.2.9"}}'
+            echo "$json" > studio-version-config.json
       - uses: tauri-apps/tauri-action@v0          
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           releaseId: ${{ needs.create-release.outputs.release_id }}
           projectPath: "./jaseci_studio"
-          args: --config $(node -e "console.log(JSON.stringify({package:{version:"1.2.8"}))")
+          args: --config ./studio-version-config.json
 
   publish-release:
     runs-on: ubuntu-20.04
