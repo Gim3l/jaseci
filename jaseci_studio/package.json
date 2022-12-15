@@ -1,7 +1,6 @@
 {
   "name": "jaseci-studio-app",
   "private": true,
-  "version": "0.0.1",
   "scripts": {
     "setup:ui": "cd ../ui_components && yarn install && yarn build",
     "dev": "next dev -p 1420",
