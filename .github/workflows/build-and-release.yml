@@ -91,7 +91,7 @@ jobs:
         with:
           file: ./jaseci_studio/src-tauri/tauri.conf.json
           field: package.version
-          value: ${{steps.set_version.outputs.no-v-tag}}
+          value: ${{ needs.create-release.outputs.no-v-tag }}
       - uses: tauri-apps/tauri-action@v0          
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
