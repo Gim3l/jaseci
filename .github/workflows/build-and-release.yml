@@ -67,6 +67,14 @@ jobs:
     
     steps:
       - uses: actions/checkout@v3
+      - name: Set versions
+        uses: actions/github-script@v6
+        id: set_version
+        with:
+          script: |
+            const tag = context.ref.substring(10)
+            const no_v_tag = tag.replace('v', '')
+            core.setOutput('no-v-tag', no_v_tag)
       - name: setup node
         uses: actions/setup-node@v3
         with:
@@ -91,7 +99,7 @@ jobs:
         with:
           file: ./jaseci_studio/src-tauri/tauri.conf.json
           field: package.version
-          value: ${{ needs.create-release.outputs.no-v-tag }}
+          value: ${{ steps.set_version.outputs.no-v-tag }}
       - uses: tauri-apps/tauri-action@v0          
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
