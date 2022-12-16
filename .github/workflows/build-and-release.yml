@@ -98,7 +98,6 @@ jobs:
         with:
           releaseId: ${{ needs.create-release.outputs.release_id }}
           projectPath: "./jaseci_studio"
-          args: --config ./studio-version-config.json
 
   publish-release:
     runs-on: ubuntu-20.04
