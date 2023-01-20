@@ -13,7 +13,7 @@ test("testConnection works", async ({ page }) => {
   const email = page.getByRole("textbox", { name: "email" });
   const password = page.getByRole("textbox", { name: "password" });
 
-  await host.fill("http://mysite.com");
+  await host.fill("http://localhost:8000");
   await email.fill("admin@mail.com");
   await password.fill("password");
 
@@ -31,16 +31,16 @@ test("login works", async ({ page }) => {
   const email = page.getByRole("textbox", { name: "email" });
   const password = page.getByRole("textbox", { name: "password" });
 
-  await host.fill("http://mysite.com");
+  await host.fill("http://localhost:8000");
   await email.fill("admin@mail.com");
   await password.fill("password");
 
   const connectBtn = page.getByRole("button", { name: "Connect to Server" });
 
   const [_, __, result] = await Promise.all([
-    page.waitForRequest("http://mysite.com/user/token/"),
+    page.waitForRequest("http://localhost:8000/user/token/"),
     connectBtn.click(),
-    page.waitForResponse("http://mysite.com/user/token/"),
+    page.waitForResponse("http://localhost:8000/user/token/"),
   ]);
 
   expect(result.status()).toBe(200);
