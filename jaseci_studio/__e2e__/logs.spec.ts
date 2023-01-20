@@ -5,8 +5,8 @@ test("logs page loads", async ({ page }) => {
   await expect(page).toHaveTitle(/Logs/);
 });
 
-test.skip("logs messages load", async ({ page }) => {
-  await page.addInitScript(() => {
+test("logs messages load", async ({ page, context }) => {
+  await context.addInitScript(() => {
     window.localStorage.setItem("serverUrl", "http://localhost:8005");
     window.localStorage.setItem("token", "abcde");
   });
@@ -28,8 +28,8 @@ test.skip("logs messages load", async ({ page }) => {
   );
 });
 
-test("pause logs works", async ({ page }) => {
-  await page.addInitScript(() => {
+test("pause logs works", async ({ page, context, browser, storageState }) => {
+  await context.addInitScript(() => {
     window.localStorage.setItem("serverUrl", "http://localhost:8005");
     window.localStorage.setItem("token", "abcde");
   });
