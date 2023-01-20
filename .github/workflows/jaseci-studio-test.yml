@@ -2,11 +2,11 @@ name: Jaseci Studio Tests
 
 on:
   push:
-    branches: [main]
+    branches: [main, studio_test_fix]
     paths:
       - jaseci_studio/**
   pull_request:
-    branches: [main]
+    branches: [main, studio_test_fix]
     paths:
       - jaseci_studio/**
 
