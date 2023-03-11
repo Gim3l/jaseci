@@ -6,7 +6,13 @@ from antlr4 import RuleNode
 class ArchitypePass(IrPass):
     def __init__(self, deps=[], **kwargs):
         super().__init__(**kwargs)
-        self.output = {"nodes": [], "walkers": [], "edges": [], "graphs": []}
+        self.output = {
+            "nodes": [],
+            "walkers": [],
+            "edges": [],
+            "graphs": [],
+            "globals": [],
+        }
         self.deps = deps
 
     def extract_vars(self, nodes: List[RuleNode]):
@@ -30,6 +36,18 @@ class ArchitypePass(IrPass):
         return vars
 
     def enter_node(self, node: RuleNode):
+
+        if node.name == "global_var":
+            if node.kid[0].name == "KW_GLOBAL":
+                self.output["globals"].append(
+                    {
+                        "name": node.kid[1].token_text(),
+                        "line": node.kid[1].loc[0],
+                        "col": node.kid[1].loc[1],
+                        "src": node.loc[2],
+                    }
+                )
+
         if node.name == "architype":
             architype = {}
             if (

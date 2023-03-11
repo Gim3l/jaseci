@@ -14,7 +14,6 @@ from jaseci.actions.standard import (
     task,
     url,
     zlib,
-    webtool,
 )
 
 
@@ -27,6 +26,7 @@ from lsprotocol.types import (
 )
 
 from server.architypes_utils import get_architype_class
+from server.utils import is_surrounded_by_quotes
 
 
 std_actions = [
@@ -225,8 +225,15 @@ def completions(
     line = doc.source.splitlines()[params.position.line]
     before_cursor = line[: params.position.character]
 
-    if not before_cursor:
-        return default_completions
+    try:
+        if not before_cursor:
+            return default_completions
+
+        if is_surrounded_by_quotes(line, params.position.character - 1):
+            return []
+
+    except Exception as e:
+        pass
 
     # get the last word before the cursor
     last_word = before_cursor.split()[-1]
@@ -253,6 +260,25 @@ def completions(
             )
 
     # handle completion for architypes references
+    if "global." in last_word and hasattr(doc, "architypes"):
+        global_var_names = [
+            global_var["name"] for global_var in doc.architypes["globals"]
+        ]
+
+        for dep in doc.dependencies.values():
+            architypes = dep["architypes"]
+            global_var_names.extend(
+                [global_var["name"] for global_var in architypes["globals"]]
+            )
+
+        return CompletionList(
+            is_incomplete=False,
+            items=[
+                CompletionItem(label=global_var_name, kind=CompletionItemKind.Variable)
+                for global_var_name in list(set(global_var_names))
+            ],
+        )
+
     if "node::" in last_word and hasattr(doc, "architypes"):
         node_names = [
             node.name
@@ -285,7 +311,7 @@ def completions(
         return CompletionList(
             is_incomplete=False,
             items=[
-                CompletionItem(label=node_name, kind=CompletionItemKind.Function)
+                CompletionItem(label=node_name, kind=CompletionItemKind.Event)
                 for node_name in list(set(walker_names))
             ],
         )

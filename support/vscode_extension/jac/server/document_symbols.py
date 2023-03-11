@@ -95,6 +95,26 @@ def get_document_symbols(
     symbols: List[SymbolInformation] = []
 
     try:
+        for global_var in architypes["globals"]:
+            symbol = SymbolInformation(
+                name=global_var["name"],
+                kind=get_architype_class("global"),
+                location=Location(
+                    uri=doc_uri,
+                    range=Range(
+                        start=Position(
+                            line=global_var["line"] - 1 + shift_lines,
+                            character=global_var["col"],
+                        ),
+                        end=Position(
+                            line=global_var["line"] + shift_lines,
+                            character=global_var["col"] + len(global_var["name"]),
+                        ),
+                    ),
+                ),
+            )
+            symbols.append(symbol)
+
         for walker in architypes["walkers"]:
             symbol = _create_architype_symbol(
                 "walker", walker, doc_uri, shift_lines=shift_lines

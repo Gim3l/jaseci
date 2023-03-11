@@ -161,3 +161,16 @@ def update_doc_deps(ls: LanguageServer, doc_uri: str):
 def get_ast_from_path(path: str):
     """Given some path, return the ast"""
     return JacAstBuilder._ast_head_map.get(path)
+
+
+def is_surrounded_by_quotes(line_text: str, cursor_position: int) -> bool:
+    quote_chars = ['"', "'"]
+    for quote_char in quote_chars:
+        start_index = line_text.rfind(quote_char, 0, cursor_position)
+        end_index = line_text.find(quote_char, cursor_position + 1)
+        if (
+            start_index >= 0
+            and end_index >= 0
+            and start_index < cursor_position < end_index
+        ):
+            return True

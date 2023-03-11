@@ -35,13 +35,9 @@ from ...server import (
     definition,
     DefinitionParams,
     Location,
-    # did_close,
     DidOpenTextDocumentParams,
     did_open,
     update_doc_tree,
-    # show_configuration_async,
-    # show_configuration_callback,
-    # show_configuration_thread,
 )
 
 doc_path = os.path.join(os.getcwd(), "server/tests/unit/fixtures/main.jac")

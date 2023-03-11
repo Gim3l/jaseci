@@ -6,10 +6,12 @@ def get_architype_class(type: str) -> SymbolKind:
     if type in ["node", "nodes"]:
         kind = SymbolKind.Class
     if type in ["walker", "walkers"]:
-        kind = SymbolKind.Function
+        kind = SymbolKind.Event
     if type in ["edge", "edges"]:
         kind = SymbolKind.Interface
     if type in ["graph", "graphs"]:
         kind = SymbolKind.Namespace
+    if type in ["global", "globals"]:
+        kind = SymbolKind.Variable
 
     return kind
